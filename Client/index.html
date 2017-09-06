@@ -224,16 +224,12 @@
                         // since Dropzone uses multi-part uploads :(
                         return `${STORAGE_URL}${INPUTCONTAINERNAME}/${files[0].name}${CONTAINER_SAS}`;
                     },
-                    headers: {
-                        "x-ms-blob-type": "BlockBlob",
-                        "Content-Type": "image/jpeg"
-                    },
                     accept: (file, done) => {
-                        if (file.name.endsWith(".jpg")) {
+                        if (file.name.endsWith(".jpg") || file.name.endsWith(".png")) {
                             done();
                         } else {
-                            alert("We only accept files which end with .jpg");
-                            done("We only accept files which end with .jpg");
+                            alert("We only accept files which end with .jpg or .png");
+                            done("We only accept files which end with .jpg or .png");
                         }
                     },
                     clickable: true,
@@ -244,7 +240,7 @@
                         });
                         this.on("addedfile", function (file) {
                             const that = this;
-                            if (!file.name.endsWith(".jpg")) {
+                            if (!(file.name.endsWith(".jpg") || file.name.endsWith(".png"))) {
                                 this.removeFile(file);
                                 return;
                             }
@@ -289,11 +285,22 @@
             }
 
             function uploadFile(file, cb) {
-                const name = generateUUID() + '.jpg'
+                const fileExt = file.name.substring(file.name.lastIndexOf(".")+1);
+                const name = generateUUID() + fileExt
                 const xhr = new XMLHttpRequest();
                 xhr.open("PUT", `${STORAGE_URL}${INPUTCONTAINERNAME}/${name}${CONTAINER_SAS}`);
                 xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
-                xhr.setRequestHeader('Content-Type', 'image/jpeg');
+                if(fileExt === "png"){
+                    xhr.setRequestHeader('Content-Type', 'image/png');
+                }
+                else if(fileExt === "jpg") {
+                    xhr.setRequestHeader('Content-Type', 'image/jpeg');
+                }
+                else {
+                    // We santize the input before this, but just incase...
+                    alert("We only accept files which end with .jpg or .png");
+                    throw new Error("Unrecognized File extension: " + fileExt);
+                }
                 xhr.send(file);
                 xhr.onload = (e) => {
                     if (xhr.status > 300) {
