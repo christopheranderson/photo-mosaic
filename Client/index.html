@@ -286,7 +286,7 @@
 
             function uploadFile(file, cb) {
                 const fileExt = file.name.substring(file.name.lastIndexOf(".")+1);
-                const name = generateUUID() + fileExt
+                const name = generateUUID() + "." + fileExt
                 const xhr = new XMLHttpRequest();
                 xhr.open("PUT", `${STORAGE_URL}${INPUTCONTAINERNAME}/${name}${CONTAINER_SAS}`);
                 xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
