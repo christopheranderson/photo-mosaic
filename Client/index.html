@@ -158,6 +158,11 @@
                 -o-transform: rotate(0deg) scale(1.5) skew(0deg) translate(0px, -10px);
             }
         }
+        
+        .formInput {
+            margin-bottom: 10px;
+        }
+
     </style>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
@@ -177,6 +182,7 @@
             <hr>
             <h2>1. Upload a photo</h2>
             <div>
+                <div class="formInput"><label for="SearchTerm">(Optional) Search term for image</label> <input id="SearchTerm" type="text"></input></div>
                 <form class="dropzone needsclick dz-clickable" id="dropzone">
                     <div class="dz-message needsclick">
                         Drop files here or click to upload.<br>
@@ -301,11 +307,14 @@
             }
 
             function startImageProcessing(file, cb) {
+                const searchTermElement = document.getElementById("SearchTerm");
+                const searchTermText = searchTermElement.value;
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", `${SITEURL}/api/RequestMosaic`);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.send(JSON.stringify({
                     InputImage: file,
+                    ImageContentString: searchTermText
                 }));
                 xhr.onload = (e) => {
                     if (xhr.status > 300) {
