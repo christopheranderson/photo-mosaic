@@ -161,6 +161,16 @@
         
         .formInput {
             margin-bottom: 10px;
+            color: #666;
+        }
+
+        #SearchTerm {
+            font-family: Segoe UI, Frutiger, Frutiger Linotype, Dejavu Sans, Helvetica Neue, Arial, sans-serif;
+            font-size: 90%;
+            color: #2F2D4A;
+            border-radius: 3px;
+            border: 1px solid #666;
+            padding: 2px;
         }
 
     </style>
@@ -182,7 +192,7 @@
             <hr>
             <h2>1. Upload a photo</h2>
             <div>
-                <div class="formInput"><label for="SearchTerm">(Optional) Search term for image</label> <input id="SearchTerm" type="text"></input></div>
+                <div class="formInput"><label for="SearchTerm">(Optional) Search term for image: </label> <input id="SearchTerm" type="text"></input></div>
                 <form class="dropzone needsclick dz-clickable" id="dropzone">
                     <div class="dz-message needsclick">
                         Drop files here or click to upload.<br>
